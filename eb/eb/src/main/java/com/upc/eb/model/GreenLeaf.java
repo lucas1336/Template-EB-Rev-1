@@ -1,5 +1,6 @@
 package com.upc.eb.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,8 +25,8 @@ public class GreenLeaf {
     @Column(name = "tip", nullable = false)
     private String tip;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "big_tree_id", nullable = false)
-    @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
     private BigTree bigTree;
 }

@@ -37,8 +37,7 @@ public class GreenLeafImpl implements GreenLeafService {
     public GreenLeaf create(GreenLeafDto greenLeaf, Long id) {
         GreenLeaf greenLeafModel = modelMapper.map(greenLeaf, GreenLeaf.class);
         BigTree bigTree = bigTreeRepository.findById(id).orElse(null);
-        bigTree.getGreenLeaves().add(greenLeafModel);
-        bigTreeRepository.save(bigTree);
+        greenLeafModel.setBigTree(bigTree);
         return greenLeafRepository.save(greenLeafModel);
     }
 }

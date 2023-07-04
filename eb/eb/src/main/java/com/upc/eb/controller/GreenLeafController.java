@@ -3,6 +3,7 @@ package com.upc.eb.controller;
 import com.upc.eb.dto.GreenLeafDto;
 import com.upc.eb.model.GreenLeaf;
 import com.upc.eb.service.GreenLeafService;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,9 +15,11 @@ import java.util.List;
 @RequestMapping("/api/trees")
 public class GreenLeafController {
     private final GreenLeafService greenLeafService;
+    private final ModelMapper modelMapper;
 
-    public GreenLeafController(GreenLeafService greenLeafService) {
+    public GreenLeafController(GreenLeafService greenLeafService, ModelMapper modelMapper) {
         this.greenLeafService = greenLeafService;
+        this.modelMapper = modelMapper;
     }
 
     // URL: http://localhost:8080/api/trees/leafs
@@ -39,7 +42,9 @@ public class GreenLeafController {
     // Method: POST
     @Transactional
     @PostMapping("/{treeId}/leafs")
-    public ResponseEntity<GreenLeaf> createGreenLeaf(@PathVariable(name = "treeId") Long treeId, @RequestBody GreenLeafDto greenLeaf) {
-        return new ResponseEntity<GreenLeaf>(greenLeafService.create(greenLeaf, treeId), HttpStatus.CREATED);
+    public ResponseEntity<GreenLeafDto> createGreenLeaf(@PathVariable(name = "treeId") Long treeId, @RequestBody GreenLeafDto greenLeaf) {
+        GreenLeaf greenLeaf1 = greenLeafService.create(greenLeaf, treeId);
+        GreenLeafDto greenLeafDto = modelMapper.map(greenLeaf1, GreenLeafDto.class);
+        return new ResponseEntity<GreenLeafDto>(greenLeafDto, HttpStatus.CREATED);
     }
 }
